@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -91,18 +92,22 @@ fun ControllerView(){
         composable(Screens.Login.screen){ ManHinhDangNhap1(naviMainCtrl,user,account)}
         composable(Screens.ViewDetailProduct.screen){ ManHinhSanPhamChiTiet1(naviMainCtrl,tempPro,productDetailView,user,cartView)}
         composable(Screens.Sigin.screen){ ManHinhDangKy1(naviMainCtrl,account)}
-        composable(Screens.Main.screen){ MainView(naviMainCtrl,{tempPro=it},cartView)}
+        composable(Screens.Main.screen){ MainView(naviMainCtrl,{tempPro=it},cartView,user)}
     }
 }
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainView(naviMain: NavHostController, data: (Product) -> Unit, cartView: CartViewModel) {
+fun MainView(
+    naviMain: NavHostController,
+    data: (Product) -> Unit,
+    cartView: CartViewModel,
+    user: State<Account>
+) {
     val productView :ProductViewModel = viewModel()
     val categoryView : CategoryViewModel = viewModel()
 
     val billView :BillViewModel = viewModel()
     val billDetailView : BillDetailViewModel = viewModel()
-
     var product  = productView.listProduct.observeAsState(initial = emptyList())
     var category = categoryView.listCategory.observeAsState(emptyList())
     var cart  =cartView.listCart.observeAsState(initial = emptyList())
@@ -139,7 +144,7 @@ fun MainView(naviMain: NavHostController, data: (Product) -> Unit, cartView: Car
             ToolBar(title = title)
         },
         content = {
-            Content(naviController = naviController, paddingValues =it ,naviMain,product.value,category.value,{data(it)})
+            Content(naviController = naviController, paddingValues =it ,naviMain,product.value,category.value,cartView,{data(it)},user)
         },
         bottomBar = {
             NaviBottom(items = items, onClicks = {
@@ -156,13 +161,15 @@ fun Content(
     navMain: NavController,
     product: List<Product>,
     cate: List<Category>,
-    data:(Product)->Unit
-    ) {
+    cartView: CartViewModel,
+    data: (Product) -> Unit,
+    user: State<Account>
+) {
         NavHost(navController = naviController,
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
             composable(Screens.Home.screen){ Home(navMain,product,cate,{data(it)})}
-            composable(Screens.Cart.screen){ CartScreen()}
+            composable(Screens.Cart.screen){ CartScreen(cartView,product,cate,user)}
             composable(Screens.Bill.screen){ Bill()}
         }
 

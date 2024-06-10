@@ -118,7 +118,7 @@ fun InputText(navMain: NavController, user: State<Account>, account: AccountView
            Button(
                onClick = {
                         account.Login(name,pass,{
-                            if (!user.value._id?.isEmpty()!!){
+                            if (!user.value.FullName.isEmpty()){
                             navMain.navigate(Screens.Main.screen)
                             }else{
                             Toast.makeText(context,"Login fail , try again please !!",Toast.LENGTH_LONG).show()
