@@ -1,5 +1,6 @@
 package com.thuydev.asmok.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,20 +20,33 @@ class CartViewModel :ViewModel() {
     init {
 
     }
-   fun GetData(id:String){
+   fun GetData(id:String,total:(Number)->Unit){
        val call = API.GetAPI().GetListCarts(id)
+       val callTotal = API.GetAPI().GetTotalCart(id)
        call!!.enqueue(object : Callback<List<Cart?>?> {
            override fun onResponse(call: Call<List<Cart?>?>, response: Response<List<Cart?>?>) {
                if(response.isSuccessful){
-                   LogOK("")
                    _listCart.value = response.body() as List<Cart>?
+
                }else{
                    LogOK("$response")
                }
            }
-
            override fun onFailure(call: Call<List<Cart?>?>, t: Throwable) {
                LogOK("$t")
+           }
+       })
+       callTotal!!.enqueue(object : Callback<Number?> {
+           override fun onResponse(call: Call<Number?>, response: Response<Number?>) {
+               if(response.isSuccessful){
+                   total(response.body()!!)
+               }else{
+                   LogOK(response)
+               }
+           }
+
+           override fun onFailure(call: Call<Number?>, t: Throwable) {
+               LogOK(t.toString())
            }
        })
    }
@@ -58,7 +72,22 @@ class CartViewModel :ViewModel() {
         })
     }
 
-    fun GetCart(i:Int): Cart {
-        return listCart.value!!.get(i)
+    fun DeleteCart(id:String,msg:(String)->Unit,action:()->Unit){
+        val  call = API.GetAPI().DeleteCart(id)
+        call!!.enqueue(object : Callback<String?> {
+            override fun onResponse(call: Call<String?>, response: Response<String?>) {
+                msg(response.body()!!)
+                if(response.isSuccessful){
+                    action()
+                }
+            }
+            override fun onFailure(call: Call<String?>, t: Throwable) {
+                GetLoi(t.toString())
+            }
+        })
     }
+}
+
+fun GetLoi(msg:String){
+    Log.e("TAG", "GetLoi: $msg" )
 }

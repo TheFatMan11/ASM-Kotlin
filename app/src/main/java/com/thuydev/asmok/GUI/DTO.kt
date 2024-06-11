@@ -41,7 +41,7 @@ data class Bill(
     var _id: String,
     var IDUser:String,
     var IDSeller:String,
-    var IDProduct:String
+    var IDProduct:MutableList<Map<String,Any>>
 ){
     companion object{
         fun getData() = listOf<Bill>()

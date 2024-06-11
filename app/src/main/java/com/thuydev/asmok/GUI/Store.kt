@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.thuydev.asmok.Extention.colorFromHex
+import com.thuydev.asmok.Extention.formatNumber
 
 
 @Composable
@@ -103,7 +104,7 @@ fun Home(
                                     modifier = Modifier.padding(10.dp,0.dp,0.dp,0.dp)
                                 )
 
-                                Text(text = "${itemPro.Price}",
+                                Text(text = "${formatNumber(itemPro.Price)}",
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Light,
                                     color = Color(0xFFEC3001),

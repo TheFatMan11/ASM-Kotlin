@@ -37,6 +37,9 @@ interface API {
             return retrofit.create(API::class.java)
         }
     }
+
+    @GET("apiuser/user/total/cart/{id}")
+    fun GetTotalCart(@Path("id") id:String):Call<Number>
     @GET("apiuser/product")
     fun GetListProducts(): Call<List<Product>?>?
 
@@ -71,7 +74,7 @@ interface API {
     fun DeleteCart(@Path("id") id: String?): Call<String?>?
 
     @POST("apiuser/bill/add")
-    fun AddBill(@Body Data: HashMap<String?, Any?>?): Call<String?>?
+    fun AddBill(@Body Data: HashMap<String, Any>?): Call<String?>?
 
     @GET("apiuser/user/bill/{id}")
     fun GetBills(@Path("id") id: String?): Call<List<Bill?>?>?
