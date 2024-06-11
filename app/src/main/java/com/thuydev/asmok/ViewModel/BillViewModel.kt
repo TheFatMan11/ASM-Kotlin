@@ -18,7 +18,22 @@ class BillViewModel :ViewModel() {
     var listBill:LiveData<List<Bill>> = _listBill
 
     init {
-        _listBill.value=Bill.getData()
+
+    }
+    fun GetBill(id:String){
+        val call = API.GetAPI().GetBills(id)
+        call!!.enqueue(object : Callback<List<Bill?>?> {
+            override fun onResponse(call: Call<List<Bill?>?>, response: Response<List<Bill?>?>) {
+                LogOK(response)
+               if(response.isSuccessful){
+                   _listBill.value = response.body() as List<Bill>?
+               }
+            }
+
+            override fun onFailure(call: Call<List<Bill?>?>, t: Throwable) {
+                LogOK(t)
+            }
+        })
     }
     fun AddBill(data:HashMap<String,Any>,msg:(String)->Unit,action:()->Unit){
         val  call = API.GetAPI().AddBill(data)

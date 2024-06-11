@@ -144,7 +144,7 @@ fun MainView(
             ToolBar(title = title)
         },
         content = {
-            Content(naviController = naviController, paddingValues =it ,naviMain,product.value,category.value,cartView,{data(it)},user,billView)
+            Content(naviController = naviController, paddingValues =it ,naviMain,product.value,category.value,cartView,{data(it)},user,billView,billDetailView)
         },
         bottomBar = {
             NaviBottom(items = items, onClicks = {
@@ -164,14 +164,15 @@ fun Content(
     cartView: CartViewModel,
     data: (Product) -> Unit,
     user: State<Account>,
-    billView: BillViewModel
+    billView: BillViewModel,
+    billDetailView: BillDetailViewModel
 ) {
         NavHost(navController = naviController,
             startDestination = Screens.Home.screen,
             modifier = Modifier.padding(paddingValues)){
             composable(Screens.Home.screen){ Home(navMain,product,cate,{data(it)})}
             composable(Screens.Cart.screen){ CartScreen(cartView,product,cate,user,billView)}
-            composable(Screens.Bill.screen){ Bill()}
+            composable(Screens.Bill.screen){ Bill(user,billView,billDetailView)}
         }
 
 }

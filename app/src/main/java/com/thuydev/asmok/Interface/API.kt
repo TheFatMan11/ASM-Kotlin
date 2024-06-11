@@ -49,8 +49,8 @@ interface API {
     @GET("apiuser/productdetail")
     fun GetProductDetails(): Call<List<ProductDetail?>?>?
 
-    @GET("apiuser/productdetail/{id}")
-    fun GetProductDetail(@Path("id") id: String?): Call<ProductDetail?>?
+    @GET("apiuser/user/billdetail/{id}")
+    fun GetProductDetail(@Path("id") id: String?): Call<List<BillDetail>>?
 
     @GET("apiuser/category")
     fun GetListCategory(): Call<List<Category?>?>?

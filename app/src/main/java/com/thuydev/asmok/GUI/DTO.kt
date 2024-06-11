@@ -21,11 +21,8 @@ data class ProductDetail(
     var Size:List<String>,
     var Date:String,
     var Amount:Number
-){
-    companion object{
-        fun getData() = listOf<ProductDetail>()
-    }
-}
+)
+
 data class Account(
     var _id: String?=null,
     var Email :String="",
@@ -48,17 +45,14 @@ data class Bill(
     }
 }
 data class BillDetail(
+    var _id: String?=null,
     var IDUser:String,
     var IDBill:String,
     var Status:Number,
     var Date:String,
-    var Amount:String,
-    var Total:String
-){
-    companion object{
-        fun getData() = listOf<BillDetail>()
-    }
-}
+    var Amount:Number,
+    var Total:Number
+)
 
 data class Cart(
     var _id: String?=null,
